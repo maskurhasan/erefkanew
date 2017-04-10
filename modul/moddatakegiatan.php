@@ -54,7 +54,7 @@ include "config/pagination.php";
               $kode = "AND a.id_Kegiatan = '$q' ";
             }
 
-            $sql = "SELECT b.nm_Kegiatan,a.id_DataKegiatan,a.id_Kegiatan,a.AnggKeg,c.nm_SbDana 
+            $sql = "SELECT b.nm_Kegiatan,a.id_DataKegiatan,a.id_Kegiatan,a.AnggKeg,c.nm_SbDana
                                       FROM kegiatan b, datakegiatan a
                                       LEFT JOIN sumberdana c ON a.id_SbDana = c.id_SbDana
                                       WHERE a.id_Skpd = '$_SESSION[id_Skpd]'
@@ -133,8 +133,22 @@ include "config/pagination.php";
                     <div class='col-sm-4'>
                     <input type=text name=AnggKeg placeholder=Anggaran>
                   </div>
-              </div>
-            </form>";
+              </div>";
+              if($_SESSION[UserLevel]==1 OR $_SESSION[UserLevel]==2) {
+                echo "<div class='clearfix form-actions'>
+                    <label class='col-sm-2 control-label'></label>
+                      <div class='col-sm-10'>
+                      <input type='hidden' name='id_Skpd' value='$_SESSION[id_Skpd]'>
+                      <input type='hidden' name='TahunAnggaran' value='$_SESSION[thn_Login]'>
+                      <input class='btn btn-primary btn-fill' type='submit' name='simpan' value=Simpan />
+                      <input class='btn btn-info' type='reset' value=Reset />
+
+                      </div>
+                </div>";
+              } else {
+                echo "";
+              }
+            echo "</form>";
 
 			echo '</div>
 				</div>
@@ -143,7 +157,7 @@ include "config/pagination.php";
 
     break;
     case "edit":
-          $sql = mysql_query("SELECT * FROM datakegiatan WHERE id_DataKegiatan = '$_GET[id]'");
+          $sql = mysql_query("SELECT * FROM datakegiatan WHERE id_DataKegiatan = '$_GET[id]' AND id_Skpd = '$_SESSION[id_Skpd]'");
           $r = mysql_fetch_array($sql);
           //parse id program k jd id
           $id_Urusan = substr($r[id_Kegiatan], 0,1);
@@ -228,26 +242,17 @@ include "config/pagination.php";
               <div class=form-group>
                   <label class='col-sm-2 control-label'>Anggaran</label>
                     <div class='col-sm-4'>
-                      <input type=text name=AnggKeg placeholder=Anggaran value=$r[AnggKeg]>       
+                      <input type=text name='AnggKeg' placeholder=Anggaran value=$r[AnggKeg]>
                     </div>
               </div>
-              <div class=form-group>
-                  <label class='col-sm-2 control-label'>Anggaran</label>
-                    <div class='col-sm-4'>
-                      <select class='input-short'  name='id_Ppk' placeholder=pilih PPK id=id_Ppk required>
-                        <option value=''>Pilih</option>";
-                        $q=mysql_query("SELECT * FROM user a, pangkat b WHERE a.id_Pangkat = b.id_Pangkat
-                                              AND a.id_Skpd = '$_SESSION[id_Skpd]'
-                                              AND a.UserLevel != 1
-                                              AND a.statusppk = 1");
-                        while ($rx=mysql_fetch_array($q)) {
-                          if($rx[id_User]==$r[id_Ppk]) {
-                            echo "<option value=$rx[id_User] selected>$rx[nm_Lengkap]</option>";
-                          } else {
-                            echo "<option value=$rx[id_User]>$rx[nm_Lengkap]</option>";
-                          }
-                        }
-                        echo "</select>
+
+              <div class='clearfix form-actions'>
+                  <label class='col-sm-2 control-label'></label>
+                    <div class='col-sm-10'>
+                    <input type='hidden' name='id_DataKegiatan' value='$r[id_DataKegiatan]'>
+                    <input class='btn btn-primary btn-fill' type='submit' name='simpan' value=Simpan />
+                    <input class='btn btn-info' type='reset' value=Reset />
+
                     </div>
               </div>
 

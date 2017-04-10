@@ -34,7 +34,33 @@
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 	</head>
+<?php
+include "config/koneksi.php";
+if($offline==1) {
+?>
+<!doctype html>
+<title>Site Maintenance</title>
+<style>
+  body { text-align: center; padding: 150px; }
+  h1 { font-size: 50px; }
+  body { font: 20px Helvetica, sans-serif; color: #333; }
+  article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+  a { color: #dc8100; text-decoration: none; }
+  a:hover { color: #333; text-decoration: none; }
+</style>
 
+<article>
+    <h1>We&rsquo;ll be back soon!</h1>
+    <div>
+        <p>Mohon maaf atas ketidaknyamanan/ Server offline, kami sedang melakukakan perbaikan. Jika ada pertanyaan silahkan hubungi <a href="mailto:#">kontak kami</a>, kami segera menyelesaikan gangguan secepatnya!</p>
+        <p>&mdash; Bappeda Luwu Utara</p>
+    </div>
+</article>
+<?php
+} else {
+//jika tidak offle tampil halama login
+
+?>
 	<body class="login-layout">
 		<div class="main-container">
 			<div class="main-content">
@@ -351,4 +377,7 @@
 			});
 		</script>
 	</body>
+	<?php
+}
+	 ?>
 </html>

@@ -287,7 +287,7 @@ include "config/pagination.php";
                     <div class=form-group>
                       <label class='col-sm-2 control-label'>Kecamatan</label>
                       <div class='col-sm-4'>
-                        <select class='form-control' name=id_Kecamatan placeholder=Kecamatan id=id_Kecamatan onchange='pilih_kecamatan(this.value);' required>
+                        <select class='form-control' name=id_Kecamatan placeholder=Kecamatan id=id_Kecamatan multiple='multiple' onchange='xpilih_kecamatan(this.value);' required>
                         <option value='' selected>Kecamatan</option>";
                         $qx=mysql_query("SELECT * FROM kecamatan");
                           while ($rx=mysql_fetch_array($qx)) {

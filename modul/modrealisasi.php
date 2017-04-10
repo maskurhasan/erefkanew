@@ -38,7 +38,7 @@ include "config/pagination.php";
                           <thead>
                           <tr>
                           <th>#</th>
-                          <th>Kode</th><th style=width:30%>Nama Kegiatan</th><th>PPTK</th><th>Target/Realisasi</th>
+                          <th>Kode</th><th style=width:30%>Nama Kegiatan</th><th>PPTK</th><th>Target</th>
                           <th>Aksi</th>
                           </tr>
                           </thead>
@@ -79,8 +79,8 @@ include "config/pagination.php";
                                     GROUP BY a.id_DataKegiatan";
                           } elseif($_SESSION['UserLevel']==2) {
                               $sql = "SELECT b.nm_Kegiatan,a.id_DataKegiatan,a.id_Kegiatan,a.AnggKeg,d.nm_Lengkap
-                                    FROM kegiatan b,subkegiatan c,datakegiatan a  
-                                    LEFT JOIN user d 
+                                    FROM kegiatan b,subkegiatan c,datakegiatan a
+                                    LEFT JOIN user d
                                     ON d.id_User = a.id_Pptk
                                     WHERE a.id_Skpd = '$_SESSION[id_Skpd]'
                                     AND a.id_Kegiatan = b.id_Kegiatan
@@ -109,7 +109,7 @@ include "config/pagination.php";
                                     <td>$dt[id_DataKegiatan]</td>
                                     <td>$dt[nm_Kegiatan]</td>
                                     <td>$dt[nm_Lengkap]</td>
-                                    <td>".number_format($dt['AnggKeg'])." / ".number_format(maxkeu($dt['id_DataKegiatan']))."</td>
+                                    <td>".number_format($dt['AnggKeg'])."</td>
                                     <td><a class='btn btn-sm btn-success btn-fill' href='?module=realisasi&act=add&id=$dt[id_DataKegiatan]'><i class='fa fa-plus fa-lg'></i> Input Realisasi</a></td>
                                     </tr>";
                           }
@@ -193,7 +193,7 @@ include "config/pagination.php";
                 $no % 2 === 0 ? $alt="" : $alt="";
                   echo "<tr>
                           <td><input type=checkbox name=pilih></td>
-                          <td>$dt[nm_SubKegiatan]<br>     
+                          <td>$dt[nm_SubKegiatan]<br>
                               <button class='btn btn-xs btn-primary btn-fill' type=button id=id_SubKegiatan value='$dt[id_SubKegiatan]' onClick='ax_form_realisasi(this.value)'><i class='fa fa-plus'></i> Realisasi</button>
                             <button class='btn btn-xs btn-success btn-fill' type=button id=id_SubKegiatan value='$dt[id_SubKegiatan]' onClick='ax_form_lampiran(this.value)'><i class='fa fa-upload'></i> upload</button>
                             <button class='btn btn-xs btn-warning btn-fill' type=button id=id_SubKegiatan value='$dt[id_SubKegiatan]' onClick='ax_form_permasalahan(this.value)'><i class='fa fa-plus'></i> Masalah</button>
@@ -204,7 +204,7 @@ include "config/pagination.php";
                 echo '
             </div>
             </div>';
- 
+
  //include "../library/chartexample.html";
           echo '<div class="col-md-8" id="subkegiatan">';
 
@@ -212,7 +212,7 @@ include "config/pagination.php";
           </div>";
 
 
-                      //akhir isi                     
+                      //akhir isi
 
                    echo '</div>
                   </div>

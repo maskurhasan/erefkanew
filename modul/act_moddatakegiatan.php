@@ -1,15 +1,15 @@
 <?php
 session_start();
-include "../../config/koneksi.php";
-include "../../config/fungsi.php";
+include "../config/koneksi.php";
+include "../config/fungsi.php";
 
 
 $module = $_GET['module'];
 $act = $_GET['act'];
 //cek jika status sudah final
-$q = mysql_query("SELECT StatusDataKegiatan FROM statusfinal WHERE id_Skpd='$_SESSION[id_Skpd]' AND thn_Anggaran='$_SESSION[thn_Login]'");
+$q = mysql_query("SELECT StatusDataKegiatan FROM statusfinal WHERE id_Status='$_SESSION[thn_Login]'");
 $r = mysql_fetch_array($q);
-if($r[StatusDataKegiatan] == "draft") { //cek jika masih draf 
+if($r[StatusDataKegiatan] == "draft") { //cek jika masih draf
 //--------------------------------------------------------------------------------------------
 $id_DataKegiatan = $_POST['id_DataKegiatan'];
 $id_Kegiatan = $_POST['id_Kegiatan'];
@@ -17,52 +17,69 @@ $TahunAnggaran = $_POST['TahunAnggaran'];
 $id_Skpd = $_POST['id_Skpd'];
 $AnggKeg = $_POST['AnggKeg'];
 $id_Ppk = $_POST['id_Ppk'];
-$id_Session = $_SESSION['Sessid'];
+$id_User = $_SESSION['id_User'];
 
 //cek nilai anggaran
 //$qc = mysql_query("SELECT * FROM ")
 
 
-if ($act == "add" and $module == "datakegiatan") {        
-        $qry = mysql_query("INSERT INTO datakegiatan (id_Kegiatan, 
-                                              TahunAnggaran, 
+if ($act == "add" and $module == "datakegiatan") {
+
+  if(isset($_POST[simpan])) {
+        $qry = mysql_query("INSERT INTO datakegiatan (id_Kegiatan,
+                                              TahunAnggaran,
                                               id_Skpd,
-                                              AnggKeg, 
+                                              AnggKeg,
                                               id_Ppk,
                                               id_Session,
-                                              tgl_Input) 
-                                      VALUES ('$id_Kegiatan', 
-                                              '$TahunAnggaran', 
+                                              tgl_Input)
+                                      VALUES ('$id_Kegiatan',
+                                              '$TahunAnggaran',
                                               '$id_Skpd',
                                               '$AnggKeg',
                                               '$id_Ppk',
-                                              '$id_Session',
+                                              '$id_User',
                                               now())");
         if ($qry)
             {
                 header('location:../main.php?module=datakegiatan');
             }
-        else 
+        else
             {
                 echo mysql_error();
             }
+    } else {
+      header('location:../main.php?module=datakegiatan');
+    }
         exit();
 } elseif($act == "edit" and $module == "datakegiatan"){
-        $qry = mysql_query("UPDATE datakegiatan SET id_Kegiatan='$id_Kegiatan', 
+        /*
+        $qry = mysql_query("UPDATE datakegiatan SET id_Kegiatan='$id_Kegiatan',
                                               id_Ppk='$id_Ppk',
                                               id_Session='$id_Session',
                                               AnggKeg='$AnggKeg',
-                                              tgl_Input=now() 
+                                              tgl_Input=now()
                                         WHERE id_DataKegiatan = '$id_DataKegiatan'");
+        */
+      if(isset($_POST[simpan])) {
+
+        $qry = mysql_query("UPDATE datakegiatan SET AnggKeg='$AnggKeg',
+                                                    tgl_Input=now()
+                                                WHERE id_DataKegiatan = '$id_DataKegiatan'");
+
+
         if ($qry)
             {
                 header('location:../main.php?module=datakegiatan');
             }
-        else 
+        else
             {
                 echo mysql_error();
             }
         exit();
+      } else {
+        header('location:../main.php?module=datakegiatan');
+      }
 } elseif($act == "delete" and $module == "datakegiatan"){
       $id = $_GET['id'];
       //periksa jika ada subkegiatan
@@ -84,9 +101,9 @@ if ($act == "add" and $module == "datakegiatan") {
 
 
 
-} 
+}
 
-}  else { //end jika final 
+}  else { //end jika final
     echo "<script type=text/javascript>window.alert('Rencana Kegiatan sudah FINAL / Belum Registrasi T.A')
         window.location.href='../main.php?module=datakegiatan'</script>";
 }

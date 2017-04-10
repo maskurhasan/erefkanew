@@ -255,7 +255,7 @@ if($cek==1 OR $_SESSION[UserLevel]=='1') {
                             echo "<option value=$key>$key $value</option>";
                           }
                         } else {
-                          echo '<option value="2" selected>3 Operator SKPD</option>';
+                          echo '<option value="3" selected>3 Operator SKPD</option>';
                         }
                       echo '</select>
                     </div>
@@ -392,10 +392,10 @@ if($cek==1 OR $_SESSION[UserLevel]=='1') {
                         </div>
                         <div class="form-group">
                           <label for="inputPassword3" class="col-sm-2 control-label">Level</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" name=UserLevel  placeholder="pilih Level" id=id_BidUrusan onchange="" required>
+                          <div class="col-sm-10">';
+                          if($_SESSION[UserLevel]==1) {
+                            echo '<select class="form-control" name=UserLevel  placeholder="pilih Level" id=id_BidUrusan onchange="" required>
                             <option value="">Pilih Level</option>';
-                            if($_SESSION[UserLevel]==1) {
                               $lvl = array(1=>'Super Admin',2=>'Admin SKPD',3=>'Operator SKPD');
                               foreach ($lvl as $key => $value) {
                                 if($key == $r[UserLevel]) {
@@ -404,8 +404,16 @@ if($cek==1 OR $_SESSION[UserLevel]=='1') {
                                   echo "<option value=$key>$key $value</option>";
                                 }
                               }
-                            } elseif($_SESSION[UserLevel]==2) {
-                              $lvl = array(2 =>'Admin SKPD',3=>'Operator SKPD');
+                              echo '</select>';
+                          } else {
+                            $lvl = array(1=>'Super Admin',2=>'Admin SKPD',3=>'Operator SKPD');
+                            $UserLevel = $r[UserLevel];
+                            echo "<input type=text class='form-control' value='$lvl[$UserLevel]'>
+                            <input type='hidden' name='UserLevel' value='$r[UserLevel]'>";
+                          }
+                          /*
+                          elseif($_SESSION[UserLevel]==2) {
+                              $lvl = array(2=>'Admin SKPD');
                               foreach ($lvl as $key => $value) {
                                 if($key == $r[UserLevel]) {
                                   echo "<option value=$key selected>$key $value</option>";
@@ -423,7 +431,8 @@ if($cek==1 OR $_SESSION[UserLevel]=='1') {
                                 }
                               }
                             }
-                            echo '</select>
+                            */
+                            echo '
                           </div>
                         </div>
                         <div class="form-group">
